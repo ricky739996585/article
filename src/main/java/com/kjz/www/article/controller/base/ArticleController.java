@@ -645,7 +645,7 @@ public class ArticleController {
         if (order != null && order.length() > 0 & "desc".equals(desc)) {
             order = order + " desc";
         }
-        //新闻ArticleVo列表
+        //ArticleVo列表
         List<ArticleVo> list = this.articleService.getList(condition, pageNo, pageSize, order, field);
         
         Map<Object, Object> map = new HashMap<Object, Object>();//data
@@ -675,9 +675,10 @@ public class ArticleController {
         		for(ArticleTagsVo articleTagsvo:articleTagsList){
         			Integer tagsId=articleTagsvo.getTagsId();//tags_id
         			TagsVo tagsvo=this.tagsService.getById(tagsId);
+        			if(tagsvo!=null){
         			Tags tags=new Tags();
         			BeanUtils.copyProperties(tagsvo,tags);
-        			tagsList.add(tags);
+        			tagsList.add(tags);}
         		}
         		json.put("tagsList", tagsList);
         		
@@ -703,31 +704,7 @@ public class ArticleController {
         return webResponse.getWebResponse(statusCode, statusMsg, data);
     }
     
-    //获取新闻列表
-    @RequestMapping(value = "/getNewsArticleList", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    @ResponseBody
-    public WebResponse getNewsArticleList(HttpServletRequest request, HttpServletResponse response, HttpSession session,
-            @RequestParam(defaultValue = "1", required = false) Integer pageNo,
-            @RequestParam(defaultValue = "10", required = false) Integer pageSize,
-            @RequestParam(defaultValue = "正常", required = false) String tbStatus,
-            @RequestParam(required = false) String keyword,
-            @RequestParam(defaultValue = "article_id", required = false) String order,
-            @RequestParam(defaultValue = "desc", required = false) String desc ){
-        return this.getArticleTypeList(request, response, session,"新闻",pageNo,pageSize,tbStatus,keyword,order,desc);
-    }
     
-    //获取博客列表
-    @RequestMapping(value = "/getBlogArticleList", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    @ResponseBody
-    public WebResponse getBlogArticleList(HttpServletRequest request, HttpServletResponse response, HttpSession session,
-            @RequestParam(defaultValue = "1", required = false) Integer pageNo,
-            @RequestParam(defaultValue = "10", required = false) Integer pageSize,
-            @RequestParam(defaultValue = "正常", required = false) String tbStatus,
-            @RequestParam(required = false) String keyword,
-            @RequestParam(defaultValue = "article_id", required = false) String order,
-            @RequestParam(defaultValue = "desc", required = false) String desc ){
-        return this.getArticleTypeList(request, response, session,"博客",pageNo,pageSize,tbStatus,keyword,order,desc);
-    }
     
     //获取论坛列表
     @RequestMapping(value = "/getForumArticleList", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
@@ -894,19 +871,7 @@ public class ArticleController {
         return jsonObject;
     }
   
-    //发表新闻
-    @RequestMapping(value = "/publishNewsArticle", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    @ResponseBody
-    public WebResponse publishNewsArticle(HttpServletRequest request, HttpServletResponse response, HttpSession session, String userId, String title, String content,  String tagsId,String articlePhotoUrl) {
-        return this.newArticle(request, response, session, userId, title, content, tagsId,articlePhotoUrl, "新闻");
-    }
-    
-    //发表博客
-    @RequestMapping(value = "/publishBlogArticle", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    @ResponseBody
-    public WebResponse publishBlogArticle(HttpServletRequest request, HttpServletResponse response, HttpSession session, String userId, String title, String content,  String tagsId,String articlePhotoUrl) {
-        return this.newArticle(request, response, session, userId, title, content, tagsId,articlePhotoUrl, "博客");
-    }
+ 
     
     //发表论坛
     @RequestMapping(value = "/publishForumArticle", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")

@@ -1,5 +1,5 @@
-﻿var listURL = "/article/getAdminArticleList";
-var editURL = "/article/editArticle";
+﻿var listURL = "127.0.0.1:9090/article/getAdminArticleList";
+var editURL = "127.0.0.1:9090/article/editArticle";
 $('#tableList').bootstrapTable({
 	url : listURL, // 请求后台的URL（*）
 	method : 'POST', // 请求方式（*）
